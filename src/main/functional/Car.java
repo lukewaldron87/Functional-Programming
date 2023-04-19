@@ -63,26 +63,18 @@ public class Car {
     //private static final CarCriterion RED_CAR_CRITERION = (Car c) -> c.getColor().equals("Red");
     private static final Criterion<Car> RED_CAR_CRITERION = c -> c.getColor().equals("Red");
 
-    public static Criterion<Car> getGasLevelCriterion(int threshold) {
+    public static Criterion<Car> getGasLevelCriterion(final int threshold) {
         return (c) -> c.getGasLevel() >= threshold;
     };
 
-    public static Criterion getPassengerNumberCriterion(int requiredPassengerNumber){
-        return new PassengerNumberCriterion(requiredPassengerNumber);
+    public static Criterion<Car> getPassengerNumberCriterion(int requiredPassengerNumber){
+        return c -> c.getPassengers().size() >= requiredPassengerNumber;
     }
 
-    private static class PassengerNumberCriterion implements Criterion<Car> {
-
-        private int requiredPassengerNumber;
-
-        public PassengerNumberCriterion(int requiredPassengerNumber){
-            this.requiredPassengerNumber = requiredPassengerNumber;
-        }
-
-        @Override
-        public boolean test(Car c) {
-            return c.getPassengers().size() >= requiredPassengerNumber;
-        }
+    //creat a criterion that takes a number of colours and tells us if a given car is of that colours
+    public static Criterion<Car> getColourCriterion(String... colours){
+        List<String> colourList = Collections.unmodifiableList(Arrays.asList(colours));
+        return car -> colourList.contains(car.getColor());
     }
 
     public static Comparator<Car> getGasComparator(){

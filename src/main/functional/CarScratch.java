@@ -90,5 +90,9 @@ public class CarScratch {
         showAll(getByCriterion(cars, Car.getGasLevelCriterion(7)));
         System.out.println("gas lever 4");
         showAll(getByCriterion(cars, Car.getGasLevelCriterion(4)));
+
+        System.out.println("colour criterion");
+        String[] colours = {"Red", "Black"};
+        showAll(getByCriterion(cars, Car.getColourCriterion(colours)));
     }
 }
