@@ -63,14 +63,9 @@ public class Car {
     //private static final CarCriterion RED_CAR_CRITERION = (Car c) -> c.getColor().equals("Red");
     private static final Criterion<Car> RED_CAR_CRITERION = c -> c.getColor().equals("Red");
 
-    public static Criterion getGasLevelCriterion(int threshold) {
-        return new Criterion<Car>() {
-            @Override
-            public boolean test(Car c) {
-                return c.getGasLevel() >= threshold;
-            }
-        };
-    }
+    public static Criterion<Car> getGasLevelCriterion(int threshold) {
+        return (c) -> c.getGasLevel() >= threshold;
+    };
 
     public static Criterion getPassengerNumberCriterion(int requiredPassengerNumber){
         return new PassengerNumberCriterion(requiredPassengerNumber);
