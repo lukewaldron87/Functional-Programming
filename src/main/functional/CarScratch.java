@@ -21,19 +21,18 @@ interface Criterion<E> {
 
 public class CarScratch {
 
+    public static <E> Criterion<E> negate(Criterion<E> crit){
+        return x -> !crit.test(x);
+    }
+
     //assignment: create AND criterion
-    public static <E> Criterion <E> and(Criterion<E> crit1, Criterion<E> crit2){
-        return x -> crit1.test(x) && crit2.test(x);
+    public static <E> Criterion <E> and(Criterion<E> first, Criterion<E> second){
+        return x -> first.test(x) && second.test(x);
     }
 
     //assignment: create OR criterion
-    public static <E> Criterion <E> or(Criterion<E> crit1, Criterion<E> crit2){
-        return x -> crit1.test(x) || crit2.test(x);
-    }
-
-
-    public static <E> Criterion<E> negate(Criterion<E> crit){
-        return x -> !crit.test(x);
+    public static <E> Criterion <E> or(Criterion<E> first, Criterion<E> second){
+        return x -> first.test(x) || second.test(x);
     }
 
     public static <E> void showAll(List<E> lc) {
@@ -120,9 +119,18 @@ public class CarScratch {
         Criterion<Car> gasLevel6 = Car.getGasLevelCriterion(6);
         Criterion<Car> redCar = Car.getRedCarCriterion();
         showAll(getByCriterion(cars, CarScratch.and(gasLevel6, redCar)));
+        System.out.println("AND test from video");
+        Criterion<Car> isRed = Car.getColourCriterion("Red");
+        Criterion<Car> fourPassengers = Car.getFourPassengerCriterion();
+        Criterion<Car> redFourPassengers = CarScratch.and(fourPassengers, isRed);
+        showAll(getByCriterion(cars, redFourPassengers));
 
         System.out.println("OR test");
         Criterion<Car> gasLevel7 = Car.getGasLevelCriterion(7);
-        showAll(getByCriterion(cars, CarScratch.or(gasLevel7, redCar)));
+        showAll(getByCriterion(cars, CarScratch.or(gasLevel7, isRed)));
+        System.out.println("OR test from video");
+        Criterion<Car> isBlack = Car.getColourCriterion("Black");
+        Criterion<Car> blackFourPassengers = CarScratch.or(fourPassengers, isBlack);
+        showAll(getByCriterion(cars, blackFourPassengers));
     }
 }
