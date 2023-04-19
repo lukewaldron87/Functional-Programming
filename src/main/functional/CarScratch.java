@@ -21,6 +21,10 @@ interface Criterion<E> {
 
 public class CarScratch {
 
+    public static <E> Criterion<E> negate(Criterion<E> crit){
+        return x -> !crit.test(x);
+    }
+
     public static <E> void showAll(List<E> lc) {
         for (E c : lc) {
             System.out.println(c);
@@ -86,13 +90,19 @@ public class CarScratch {
         System.out.println("appointments in the future");
         showAll(getByCriterion(dates, localDate -> localDate.isAfter(today)));*/
 
-        System.out.println("gas lever 7");
+        /*System.out.println("gas lever 7");
         showAll(getByCriterion(cars, Car.getGasLevelCriterion(7)));
         System.out.println("gas lever 4");
         showAll(getByCriterion(cars, Car.getGasLevelCriterion(4)));
 
         System.out.println("colour criterion");
         String[] colours = {"Red", "Black"};
-        showAll(getByCriterion(cars, Car.getColourCriterion(colours)));
+        showAll(getByCriterion(cars, Car.getColourCriterion(colours)));*/
+
+        System.out.println("negate test");
+        Criterion<Car> level7 = Car.getGasLevelCriterion(7);
+        showAll(getByCriterion(cars,level7));
+        Criterion<Car> notLevel7 = CarScratch.negate(level7);
+        showAll(getByCriterion(cars,notLevel7));
     }
 }
