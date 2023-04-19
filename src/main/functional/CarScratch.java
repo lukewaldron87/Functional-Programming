@@ -21,6 +21,17 @@ interface Criterion<E> {
 
 public class CarScratch {
 
+    //assignment: create AND criterion
+    public static <E> Criterion <E> and(Criterion<E> crit1, Criterion<E> crit2){
+        return x -> crit1.test(x) && crit2.test(x);
+    }
+
+    //assignment: create OR criterion
+    public static <E> Criterion <E> or(Criterion<E> crit1, Criterion<E> crit2){
+        return x -> crit1.test(x) || crit2.test(x);
+    }
+
+
     public static <E> Criterion<E> negate(Criterion<E> crit){
         return x -> !crit.test(x);
     }
@@ -104,5 +115,14 @@ public class CarScratch {
         showAll(getByCriterion(cars,level7));
         Criterion<Car> notLevel7 = CarScratch.negate(level7);
         showAll(getByCriterion(cars,notLevel7));
+
+        System.out.println("AND test");
+        Criterion<Car> gasLevel6 = Car.getGasLevelCriterion(6);
+        Criterion<Car> redCar = Car.getRedCarCriterion();
+        showAll(getByCriterion(cars, CarScratch.and(gasLevel6, redCar)));
+
+        System.out.println("OR test");
+        Criterion<Car> gasLevel7 = Car.getGasLevelCriterion(7);
+        showAll(getByCriterion(cars, CarScratch.or(gasLevel7, redCar)));
     }
 }
