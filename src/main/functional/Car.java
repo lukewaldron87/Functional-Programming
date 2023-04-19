@@ -71,10 +71,12 @@ public class Car {
         return c -> c.getPassengers().size() >= requiredPassengerNumber;
     }
 
-    //creat a criterion that takes a number of colours and tells us if a given car is of that colours
+    //assignment: create a criterion that takes a number of colours and tells us if a given car is of that colours
     public static Criterion<Car> getColourCriterion(String... colours){
-        List<String> colourList = Collections.unmodifiableList(Arrays.asList(colours));
-        return car -> colourList.contains(car.getColor());
+        //List<String> colourList = Collections.unmodifiableList(Arrays.asList(colours));
+        //return car -> colourList.contains(car.getColor());
+        Set<String > colourSet = new HashSet<>(Arrays.asList(colours));
+        return car -> colourSet.contains(car.getColor());
     }
 
     public static Comparator<Car> getGasComparator(){
