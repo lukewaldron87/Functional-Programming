@@ -90,28 +90,29 @@ public class CarScratch {
         String[] colours = {"Red", "Black"};
         showAll(getByCriterion(cars, Car.getColourCriterion(colours)));*/
 
-        System.out.println("negate test");
+
         Criterion<Car> level7 = Car.getGasLevelCriterion(7);
         showAll(getByCriterion(cars,level7));
-        Criterion<Car> notLevel7 = Criterion.negate(level7);
+        System.out.println("negate test");
+        Criterion<Car> notLevel7 = level7.negate();
         showAll(getByCriterion(cars,notLevel7));
 
         System.out.println("AND test");
         Criterion<Car> gasLevel6 = Car.getGasLevelCriterion(6);
         Criterion<Car> redCar = Car.getRedCarCriterion();
-        showAll(getByCriterion(cars, Criterion.and(gasLevel6, redCar)));
+        showAll(getByCriterion(cars, gasLevel6.and(redCar)));
         System.out.println("AND test from video");
         Criterion<Car> isRed = Car.getColourCriterion("Red");
         Criterion<Car> fourPassengers = Car.getFourPassengerCriterion();
-        Criterion<Car> redFourPassengers = Criterion.and(fourPassengers, isRed);
+        Criterion<Car> redFourPassengers = fourPassengers.and(isRed);
         showAll(getByCriterion(cars, redFourPassengers));
 
         System.out.println("OR test");
         Criterion<Car> gasLevel7 = Car.getGasLevelCriterion(7);
-        showAll(getByCriterion(cars, Criterion.or(gasLevel7, isRed)));
+        showAll(getByCriterion(cars, gasLevel7.or(isRed)));
         System.out.println("OR test from video");
         Criterion<Car> isBlack = Car.getColourCriterion("Black");
-        Criterion<Car> blackFourPassengers = Criterion.or(fourPassengers, isBlack);
+        Criterion<Car> blackFourPassengers = fourPassengers.or(isBlack);
         showAll(getByCriterion(cars, blackFourPassengers));
     }
 }
