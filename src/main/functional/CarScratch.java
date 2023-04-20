@@ -1,10 +1,11 @@
 package main.functional;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.ToIntFunction;
 
 class PassengerCounterOrder implements Comparator<Car>{
 
@@ -15,6 +16,15 @@ class PassengerCounterOrder implements Comparator<Car>{
 }
 
 public class CarScratch {
+
+    public static <E> ToIntFunction<E> compareWithThis(E target, Comparator<E> comp){
+        return x -> comp.compare(target, x);
+    }
+
+    //assignment: return true if less than 0 (predicate for compareWithThis)
+    public static <E>Predicate<E> comparesGreater(Car car, ToIntFunction toIntFunction){
+        return x -> toIntFunction.applyAsInt(car) < 0;
+    }
 
     public static <E> void showAll(List<E> lc) {
         for (E c : lc) {
@@ -114,5 +124,19 @@ public class CarScratch {
         Criterion<Car> isBlack = Car.getColourCriterion("Black");
         Criterion<Car> blackFourPassengers = fourPassengers.or(isBlack);
         showAll(getByCriterion(cars, blackFourPassengers));
+
+        Car burt = Car.withGasColorPassengers(5, "Blue");
+        ToIntFunction<Car> compareWithBert = compareWithThis(burt, Car.getGasComparator());
+        for (Car c: cars){
+            System.out.println("compare car " + c + " with bert gives "+
+                    compareWithBert.applyAsInt(c));
+        }
+
+        System.out.println("predicate");
+        for (Car c: cars){
+            System.out.println("Burt has "+ burt.getGasLevel() +
+                    " fuel and car c has "+c.getGasLevel()+" fuel. Is that more than bert? "+
+                    comparesGreater(c, compareWithBert).test(c));
+        }
     }
 }
