@@ -22,8 +22,12 @@ public class CarScratch {
     }
 
     //assignment: return true if less than 0 (predicate for compareWithThis)
-    public static <E>Predicate<E> comparesGreater(Car car, ToIntFunction toIntFunction){
+    /*public static <E>Predicate<E> comparesGreater(Car car, ToIntFunction toIntFunction){
         return x -> toIntFunction.applyAsInt(car) < 0;
+    }*/
+
+    public static <E> Predicate<E> comparesGreater(ToIntFunction<E> comp){
+        return x -> comp.applyAsInt(x) < 0;
     }
 
     public static <E> void showAll(List<E> lc) {
@@ -45,6 +49,17 @@ public class CarScratch {
         return output;
     }
 
+    public static <E> List<E> getByPredicate(Iterable<E> in, Predicate<E> crit) {
+
+        List<E> output = new ArrayList<>();
+        for (E c: in){
+            if(crit.test(c)){
+                output.add(c);
+            }
+        }
+        return output;
+
+    }
     public static void main(String[] args) {
         List<Car> cars = Arrays.asList(
                 Car.withGasColorPassengers(6, "Red", "Fred", "Jim", "Sheila"),
@@ -136,7 +151,10 @@ public class CarScratch {
         for (Car c: cars){
             System.out.println("Burt has "+ burt.getGasLevel() +
                     " fuel and car c has "+c.getGasLevel()+" fuel. Is that more than bert? "+
-                    comparesGreater(c, compareWithBert).test(c));
+                    comparesGreater(compareWithBert).test(c));
         }
+
+        System.out.println("predicate solution from video");
+        showAll(getByPredicate(cars, comparesGreater(compareWithBert)));
     }
 }
