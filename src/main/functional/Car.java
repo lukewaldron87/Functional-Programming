@@ -32,8 +32,8 @@ public class Car {
         return gasLevel;
     }
 
-    public Car addGas(int g) {
-        return new Car(gasLevel + g, color, passengers, trunkContents);
+    public Car addGas(int g){
+        return new Car(this.gasLevel + g, this.color, this.passengers, this.trunkContents);
     }
 
     public String getColor() {
