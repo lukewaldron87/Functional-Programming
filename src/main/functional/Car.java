@@ -44,6 +44,14 @@ public class Car {
         return passengers;
     }
 
+    public List<String> getTrunkContents() {
+        return trunkContents;
+    }
+
+    public Optional<List<String>> getTrunkContentsOpt(){
+        return Optional.ofNullable(trunkContents);
+    }
+
     @Override
     public String toString() {
         return "Car{" + "gasLevel=" + gasLevel + ", color=" + color + ", passengers=" + passengers
