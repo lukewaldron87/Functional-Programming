@@ -93,5 +93,23 @@ public class Student {
         table2.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue())
                 .forEach(e -> System.out.println(e.getValue() + " students got grade " + e.getKey()));
+
+        System.out.println("-------------------------------");
+
+        // create output ordered by grade letter
+        // output form: students (fred, jim, sheila) achieve grade LETTER
+        // use 2 downstream collectors in a stream
+        // 1 will take the student and extract the name
+        // the other will concatenate string values
+
+        Map<String, List<String>> assignmentTable = school.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.getLetterGrade(),
+                        Collectors.mapping(student -> student.getName(),Collectors.toList())));
+
+        assignmentTable.entrySet().stream()
+                .forEach(e -> System.out.println(
+                                e.getValue().stream().map(s -> s.toString()+" ").reduce(" ", String::concat) +
+                                "achieve grade " + e.getKey()));
     }
 }
