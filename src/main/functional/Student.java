@@ -66,5 +66,32 @@ public class Student {
                 new Student("Bonzo", 57));
 
         school.forEach(s -> System.out.println(s));
+
+        Map<String, List<Student>> table = school.stream()
+                .collect(Collectors.groupingBy(s -> s.getLetterGrade()));
+
+        //Comparator<Map.Entry<String, List<Student>>> comparator =
+        //        (e1, e2) -> e2.getKey().compareTo(e1.getKey());
+
+        Comparator<Map.Entry<String, List<Student>>> comparator =
+                Map.Entry.comparingByKey();
+        comparator = comparator.reversed();
+
+        table.entrySet().stream()
+                .sorted(comparator)
+                .forEach(e -> System.out.println(
+                        "Students " + e.getValue() +
+                        "have grade " + e.getKey()));
+
+        System.out.println("-------------------------------");
+
+        Map<String, Long> table2 = school.stream()
+                .collect(Collectors.groupingBy(
+                        s -> s.getLetterGrade(),
+                        Collectors.counting()));
+
+        table2.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(e -> System.out.println(e.getValue() + " students got grade " + e.getKey()));
     }
 }
