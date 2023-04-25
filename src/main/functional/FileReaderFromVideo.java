@@ -18,14 +18,24 @@ public class FileReaderFromVideo {
     private static final Comparator<Map.Entry<String, Long>> REVERSED_VALUE =
             VALUE_ORDER.reversed();
 
-    public static Optional<Stream<String>> lines(Path p){
+    public static <E, F> Function<E, Optional<F>> wrap(ExceptionFunction<E, F> op){
+        return e -> {
+          try {
+              return Optional.of(op.apply(e));
+          }catch (Throwable t){
+              return Optional.empty();
+          }
+        };
+    }
+
+    /*public static Optional<Stream<String>> lines(Path p){
         try{
             return Optional.of(Files.lines(p));
         }catch (IOException ioe){
             System.out.println("File read failed: " + ioe.getMessage());
             return Optional.empty();
         }
-    }
+    }*/
 
     public static void main(String args[]) throws Throwable{
 
@@ -40,7 +50,8 @@ public class FileReaderFromVideo {
 
         fileNames.stream()
                 .map(Paths::get)// get a file from the list
-                .map(FileReaderFromVideo::lines)// read the lines of the file
+                //.map(FileReaderFromVideo::lines)// read the lines of the file
+                .map(wrap(p -> Files.lines(p)))// read the lines of the file
                 .peek(o -> {if (!o.isPresent()) System.err.println("Bad File!");})// check if the optional is empty
                 .filter(Optional::isPresent)//discard empty optionals
                 .flatMap(Optional::get)//extract the stream of string for the valid optionals
