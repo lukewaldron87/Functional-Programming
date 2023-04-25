@@ -24,11 +24,15 @@ public class FileReader {
 
             // extract words from lines
             Pattern pattern = Pattern.compile("\\W+");;
-            Stream<String> wordsStream = stream.flatMap(line -> pattern.splitAsStream(line)).filter(x -> !x.isEmpty());
+            Stream<String> wordsStream = stream
+                    .flatMap(line -> pattern.splitAsStream(line))
+                    .filter(x -> !x.isEmpty())
+                    .map(w -> w.toLowerCase());
             //wordsStream.forEach(w -> System.out.println(w));
 
             //count the number of word occurrences
-            Map<String, Long> wordCount = wordsStream.collect(Collectors.groupingBy(word -> word.toString(), Collectors.counting()));
+            Map<String, Long> wordCount = wordsStream.
+                    collect(Collectors.groupingBy(word -> word.toString(), Collectors.counting()));
 
             // sort ascending
             Comparator<Map.Entry<String, Long>> comparator =
