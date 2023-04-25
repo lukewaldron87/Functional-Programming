@@ -22,13 +22,16 @@ public class FileReaderFromVideo {
 
         // read file to stream
         Files.lines(Paths.get(fileName))// get all the lines form the document
-                .flatMap(l -> WORD_BREAK.splitAsStream(l)) // get the words from each line
+                //.flatMap(l -> WORD_BREAK.splitAsStream(l)) // get the words from each line
+                .flatMap(WORD_BREAK::splitAsStream) // get the words from each line
                 .filter(w -> w.length() > 0)
-                .map(w -> w.toLowerCase())
+                //.map(w -> w.toLowerCase())
+                .map(String::toLowerCase)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))// get a map of words and their number of occurances
                 .entrySet().stream()
                 .sorted(REVERSED_VALUE)
                 .limit(200)// get the first 200 words
-                .forEach(l -> System.out.printf("%20s : %5d\n", l.getKey(), l.getValue()));
+                .map(l -> String.format("%20s : %5d", l.getKey(), l.getValue()))
+                .forEach(l -> System.out.println(l));
     }
 }

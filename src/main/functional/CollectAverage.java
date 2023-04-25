@@ -36,8 +36,14 @@ public class CollectAverage {
                 //.parallel()
                 //.unordered() // Stream.generate is already unordered...
                 .limit(200_000_000L)
-                .map(x -> Math.sin(x))
-                .collect(() -> new Averager(), (b, i) -> b.include(i), (b1, b2) -> b1.merge(b2));
+                //.map(x -> Math.sin(x))
+                .map(Math::sin)
+                //.collect(() -> new Averager(),
+                //        (b, i) -> b.include(i),
+                //        (b1, b2) -> b1.merge(b2));
+                .collect(Averager::new,
+                        Averager::include,
+                        Averager::merge);
         long end = System.nanoTime();
 
         System.out.println("Average is " + result.get() + " computation took " +
